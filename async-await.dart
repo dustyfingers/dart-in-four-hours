@@ -4,10 +4,10 @@ void main() {
   performTasks();
 }
 
-void performTasks() {
+void performTasks() async {
   taskOne();
-  taskTwo();
-  taskThree();
+  String taskTwoResult = await taskTwo();
+  taskThree(taskTwoResult);
 }
 
 void taskOne() {
@@ -15,14 +15,21 @@ void taskOne() {
   print('task 1 completed!');
 }
 
-void taskTwo() {
+// this change makes this method run asynchonously!
+Future<String> taskTwo() async {
   Duration threeSeconds = Duration(seconds: 3);
-  sleep(threeSeconds);
-  String result = 'task 2 stuff';
-  print('task 2 completed!');
+  String result = '';
+
+  // pass a void cb as the second arg
+  await Future.delayed(threeSeconds, () {
+    result = 'task 2 stuff';
+    print('task 2 completed!');
+  });
+
+  return result;
 }
 
-void taskThree() {
+void taskThree(String data) {
   String result = 'task 3 stuff';
-  print('task 3 completed!');
+  print('task 3 completed with $data!');
 }
