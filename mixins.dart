@@ -1,7 +1,10 @@
+import 'dart:math';
+
 void main() {
-  Animal().move();
-  Fish().move();
-  Bird().move();
+  // Animal().move();
+  // Fish().move();
+  // Bird().move();
+  Duck().move();
 }
 
 class Animal {
@@ -10,27 +13,40 @@ class Animal {
   }
 }
 
-class Fish extends Animal {
+class Fish extends Animal with CanSwim {
   @override
   void move() {
+    this.swim();
     super.move();
-    print('swam away!!');
   }
 }
 
-class Bird extends Animal {
+class Bird extends Animal with CanFly {
   @override
   void move() {
+    this.fly();
     super.move();
-    print('took to the sky!!');
   }
 }
 
 // ducks can both swim and fly! mixins coming to save the day!
-class Duck extends Bird {}
+class Duck extends Animal with CanSwim, CanFly {
+  @override
+  void move() {
+    int randomNum = Random().nextInt(2);
+    randomNum == 0 ? this.swim() : this.fly();
+    super.move();
+  }
+}
 
 mixin CanSwim {
   void swim() {
-    print('swam away!');
+    print('swam away!!');
+  }
+}
+
+mixin CanFly {
+  void fly() {
+    print('took to the sky!!');
   }
 }
